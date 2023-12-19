@@ -16,7 +16,7 @@ VALUES
 ('Potato Chips','https://upload.wikimedia.org/wikipedia/commons/6/69/Potato-Chips.jpg', 'Chips' , 140, 7.1, false, 1 ),
 ('Beef Jerky','https://upload.wikimedia.org/wikipedia/commons/1/1f/Beef-jerky.jpg', 'Meat' , 50, 8.7, false, 1 ),
 ('Snickers','https://upload.wikimedia.org/wikipedia/commons/2/27/2019-01-28_19_55_14_A_Snickers_bar_with_the_wrapper_still_intact_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg', 'Candy Bar' , 250, 9.2, false, 1 ),
-('Kit Kat','https://upload.wikimedia.org/wikipedia/commons/2/27/2019-01-28_19_55_14_A_Snickers_bar_with_the_wrapper_still_intact_in_the_Dulles_section_of_Sterling%2C_Loudoun_County%2C_Virginia.jpg', 'Candy Bar' , 220, 8.7, false, 1 ),
+('Kit Kat','https://upload.wikimedia.org/wikipedia/commons/f/fc/Kit-Kat-Split.jpg', 'Candy Bar' , 220, 8.7, false, 1 ),
 ('Flan','https://upload.wikimedia.org/wikipedia/commons/7/74/Flan_Potes_2.jpg', 'Dessert' , 320, 2.1, true, 1 ),
 ('Cheese Cake','https://upload.wikimedia.org/wikipedia/commons/0/0a/New_York_cheese_cake_in_coffee_house.jpg', 'Cake' , 210, 8.2, false, 1 ),
 ('Tiramisu','https://upload.wikimedia.org/wikipedia/commons/e/e7/Classic_Italian_Tiramisu-3_%2829989504485%29.jpg', 'Pastry' , 375, 3.3, false, 1 ),
