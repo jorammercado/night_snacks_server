@@ -117,10 +117,11 @@ snacks.post("/", checkSnackName,
     checkIsNumberRating, async (req, res) => {
         try {
             const snack = req.body;
+            snack.user_id = !snack.user_id ? 1: snack.user_id
             snack.category = !snack.category ? "Snack Category" : snack.category
             snack.calories = !snack.calories ? 0 : snack.calories
             snack.rating = !snack.rating ? 0 : snack.rating
-            snack.image = !snack.image ? 'https://commons.wikimedia.org/wiki/Main_Page' : snack.wikipedia_link
+            snack.image = !snack.image ? 'https://commons.wikimedia.org/wiki/Main_Page' : snack.image
             snack.is_favorite = !snack.is_favorite ? false : snack.is_favorite
             const snackAdded = await createSnack(snack)
             res.status(200).json(snackAdded)

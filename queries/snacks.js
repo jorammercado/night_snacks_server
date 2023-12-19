@@ -36,13 +36,13 @@ const deleteSnack = async (resource_id) => {
 const createSnack = async (snack) => {
     try {
         const { name, image, category, calories,
-            rating, is_favorite } = snack
+            rating, is_favorite, user_id } = snack
         const newSnack = await db.one(
             `INSERT INTO snacks(name, image, category, calories,` +
-            ` rating, is_favorite)` +
-            ` VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
+            ` rating, is_favorite, user_id)` +
+            ` VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
             [name, image, category, calories,
-                rating, is_favorite]
+                rating, is_favorite, user_id]
         )
         return newSnack
     }
