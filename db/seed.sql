@@ -2,9 +2,9 @@
 
 INSERT INTO users(username, email, password_hash, registration_date )
 VALUES
-('user1', 'user1@example.com', 'hashed_password1', 'registered_date'),
-('user2', 'user1@example.com', 'hashed_password2', 'registered_date'),
-('user3', 'user1@example.com', 'hashed_password3', 'registered_date');
+('user1', 'user1@example.com', 'hashed_password1', '12/19/2023'),
+('user2', 'user1@example.com', 'hashed_password2', '12/19/2023'),
+('user3', 'user1@example.com', 'hashed_password3', '12/19/2023');
 
 INSERT INTO snacks (name, image, category, calories, rating, is_favorite) 
 VALUES
