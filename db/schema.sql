@@ -14,7 +14,7 @@ CREATE TABLE snacks (
     resource_id SERIAL PRIMARY KEY,
     user_id INT,
     name TEXT NOT NULL,
-    image TEXT NOT NULL DEFAULT 'image of snack',
+    image TEXT NOT NULL DEFAULT 'https://commons.wikimedia.org/wiki/Main_Page',
     category TEXT NOT NULL DEFAULT 'category of snack',
     calories INT DEFAULT 0,
     rating DECIMAL DEFAULT 0,
