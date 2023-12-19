@@ -9,6 +9,9 @@ app.get("/", (req, res) => {
     res.send("Welcome to Night Snacks")
 })
 
+const usersController = require("./controllers/usersController");
+app.use("/users", usersController);
+
 app.get("*", (req, res) => {
     res.status(404).send("Page not found")
 })
