@@ -9,6 +9,11 @@ const {
   createUser,
 } = require("../queries/users.js");
 
+const{
+  checkName,
+  checkBoolean
+} = require("../validations/checkUser.js")
+
 const PRIVATE_KEY = process.env.PRIVATE_KEYr;
 
 const users = express.Router();
@@ -18,7 +23,7 @@ passport.use(new BearerStrategy(
     async (token, done) => {
         try {
             // Decode the JWT and retrieve the user ID
-            const userId = // decode token and get user ID;
+            const userId = "" // decode token and get user ID;
 
             // Fetch the user from the database
             const user = await getOneUserById(userId);
