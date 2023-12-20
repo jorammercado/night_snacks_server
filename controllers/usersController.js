@@ -1,5 +1,5 @@
 const express = require("express");
-// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 const {
   getOneUser,
@@ -12,7 +12,11 @@ const users = express.Router();
 
 // LOGIN ROUTE
 users.post("/login", async (req, res) => {
-
+  const data = req.body;
+  const user = getOneUser(data.email)
+  res.status(200).json(user)
+  console.log("hello world")
+  
 });
 
 // SIGN UP ROUTE
