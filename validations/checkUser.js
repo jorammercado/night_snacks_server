@@ -16,7 +16,7 @@ const checkEmail = (req, res, next) => {
 }
 
 const checkPassword = (req, res, next) => {
-    if(req.body.password_hash){
+    if(req.body.password){
         return next()
     } else {
         res.status(400).json({ error: "password is required!" })
