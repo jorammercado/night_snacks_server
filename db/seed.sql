@@ -1,10 +1,10 @@
 \c snacks_dev;
 
-INSERT INTO users(username, email, password_hash )
-VALUES
-('admin', 'admin@example.com', '$2a$10$o5/9VUbgLhN/IEJQ7jRJOO4FZDrL5yENb6GtFrWoAX7r92z7OXeem'),
-('user2', 'user2@example.com', '$2a$10$vJHRxxeVwXo1fAoc.0aRY.kVIWghxlZbkyIwrKoxX1UNYkIGUjQqC'),
-('user3', 'user2@example.com', '$2a$10$vJHRxxeVwXo1fAoc.0aRY.kVIWghxlZbkyIwrKoxX1UNYkIGUjQqC');
+-- INSERT INTO users(username, email, password_hash )
+-- VALUES
+-- ('admin', 'admin@example.com', '$2a$10$o5/9VUbgLhN/IEJQ7jRJOO4FZDrL5yENb6GtFrWoAX7r92z7OXeem'),
+-- ('user2', 'user2@example.com', '$2a$10$vJHRxxeVwXo1fAoc.0aRY.kVIWghxlZbkyIwrKoxX1UNYkIGUjQqC'),
+-- ('user3', 'user2@example.com', '$2a$10$vJHRxxeVwXo1fAoc.0aRY.kVIWghxlZbkyIwrKoxX1UNYkIGUjQqC');
 
 INSERT INTO snacks (name, image, category, calories, rating, is_favorite, user_id) 
 VALUES
