@@ -22,10 +22,14 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
     if (oneUser) {
         bcrypt.compare(req.body.password, oneUser.password).then((isMatch) => {
             if (isMatch) {
-                res.status(200).json(oneUser)
+                res.status(200).json({ status: "Login Success", login: true })
             }
             else {
-                res.status(400).json({ error: "incorect password" })
+                res.status(400).json({
+                    error: "incorect password/email",
+                    status: "Login Failure",
+                    login: false
+                })
             }
         })
     }
