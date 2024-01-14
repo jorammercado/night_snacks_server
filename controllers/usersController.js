@@ -17,7 +17,7 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const users = express.Router()
 
 // LOGIN ROUTE
-users.post("/login", checkName, checkEmail, checkPassword, async (req, res) => {
+users.post("/login", checkEmail, checkPassword, async (req, res) => {
     const oneUser = await getOneUserByEmail(req.body)
     if (oneUser) {
         bcrypt.compare(req.body.password, oneUser.password).then((isMatch) => {
