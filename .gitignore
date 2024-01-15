@@ -2,4 +2,3 @@ node_modules
 .env
 .DS_Store
 jwtRS256.key
-jwtRS256.key.pub
