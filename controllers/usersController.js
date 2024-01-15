@@ -18,11 +18,12 @@ const users = express.Router()
 
 // LOGIN ROUTE
 users.post("/login", checkEmail, checkPassword, async (req, res) => {
-    const oneUser = await getOneUserByEmail(req.body)
+    let oneUser = await getOneUserByEmail(req.body)
     if (oneUser) {
         bcrypt.compare(req.body.password, oneUser.password).then((isMatch) => {
             if (isMatch) {
-                res.status(200).json({ status: "Login Success", login: true })
+                oneUser.password="hidden"
+                res.status(200).json({ status: "Login Success", login: true, oneUser })
             }
             else {
                 res.status(400).json({
@@ -40,11 +41,10 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
 
 // SIGN UP ROUTE
 users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
-    console.log("HERE!!")
     const registeredUserByEmail = await getOneUserByEmail(req.body)
     const registeredUserByUserName = await getOneUserByUserName(req.body)
     if (registeredUserByEmail)
-        return res.status(400).json({ error: "user already registered with this address", registeredUserByEmail })
+        return res.status(400).json({ error: "user already registered with this address" })
     else if (registeredUserByUserName)
         return res.status(400).json({ error: "user already registered with this username" })
     else {
@@ -52,12 +52,11 @@ users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
         bcrypt.genSalt(10, async (err, salt) => {
             bcrypt.hash(newUser.password, salt, async (err, hash) => {
                 if (err) throw err
-                console.log(hash, " hash ")
                 newUser.password = hash
                 try {
-                    const createdUser = await createUser(newUser)
-                    console.log(createdUser, " created user here")
+                    let createdUser = await createUser(newUser)
                     if (createdUser.user_id) {
+                        createdUser.password="hidden"
                         res.status(200).json(createdUser)
                     }
                     else {
