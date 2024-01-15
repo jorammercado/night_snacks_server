@@ -44,7 +44,7 @@ users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
     const registeredUserByEmail = await getOneUserByEmail(req.body)
     const registeredUserByUserName = await getOneUserByUserName(req.body)
     if (registeredUserByEmail)
-        return res.status(400).json({ error: "user already registered with this address" }, registeredUserByEmail)
+        return res.status(400).json({ error: "user already registered with this address", registeredUserByEmail })
     else if (registeredUserByUserName)
         return res.status(400).json({ error: "user already registered with this username" })
     else {
