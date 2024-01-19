@@ -27,7 +27,7 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
             }
             else {
                 res.status(400).json({
-                    error: "incorect password/email",
+                    error: "incorect password/email combo",
                     status: "Login Failure",
                     login: false
                 })
@@ -35,7 +35,7 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
         })
     }
     else {
-        res.status(404).json({ error: "not found!" })
+        res.status(404).json({ error: `user with ${req.body.email} email not found!` })
     }
 })
 
