@@ -10,6 +10,9 @@ CREATE TABLE users (
     lastname VARCHAR(50) NOT NULL DEFAULt 'last namer unknown',
     email VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    profile_img TEXT DEFAULT 'profile image',
+    about TEXT DEFAULT 'about me',
+    dob VARCHAR(20) DEFAULT '1/1/2024',
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 CREATE TABLE snacks (
