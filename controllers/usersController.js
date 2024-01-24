@@ -6,6 +6,7 @@ const {
     getOneUserByEmail,
     getOneUserByUserName,
     createUser,
+    deleteUser
 } = require("../queries/users.js")
 const {
     checkName,
@@ -75,6 +76,24 @@ users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
                 }
             })
         })
+    }
+})
+
+// delete user
+users.delete("/:id", checkName, async (req, res) => {
+    try {
+        const { username } = req.params
+        const deletedUser = await deleteUser(username)
+        if (deletedUser) {
+            deletedUser.password = ""
+            res.status(200).json(deletedUser)
+        }
+        else {
+            res.status(404).json({ error: "user not found => not deleted" })
+        }
+    }
+    catch (error) {
+        res.status(400).json({error: `${error}, error in delete server path`})
     }
 })
 
