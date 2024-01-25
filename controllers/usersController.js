@@ -5,7 +5,8 @@ const {
     getOneUserByEmail,
     getOneUserByUserName,
     createUser,
-    deleteUser
+    deleteUser,
+    updateUser
 } = require("../queries/users.js")
 const {
     checkUsername,
@@ -17,7 +18,7 @@ const {
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const users = express.Router()
 
-// LOGIN ROUTE
+// LOGIN ROUTE TO USER ACCOUNT
 users.post("/login", checkEmail, checkPassword, async (req, res) => {
     let oneUser = await getOneUserByEmail(req.body)
     if (oneUser) {
@@ -40,7 +41,7 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
     }
 })
 
-// SIGN UP ROUTE
+// SIGN UP ROUTE, CREATE USER
 users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
     const registeredUserByEmail = await getOneUserByEmail(req.body)
     const registeredUserByUserName = await getOneUserByUserName(req.body)
@@ -60,7 +61,7 @@ users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
                     newUser.lastname = !newUser.lastname ? "unknown last name" : newUser.lastname
                     newUser.about = !newUser.about ? "about me" : newUser.about
                     newUser.dob = !newUser.dob ? "1/1/2024" : newUser.dob
-                    let createdUser = await createUser(newUser)
+                    let createdUser = await updateUser(newUser)
                     if (createdUser.user_id) {
                         createdUser.password = "hidden"
                         res.status(200).json(createdUser)
@@ -79,7 +80,7 @@ users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
     }
 })
 
-// delete user
+// DELETE USER
 users.delete("/:user_id", checkUserIndex, async (req, res) => {
     try {
         const { user_id } = req.params
@@ -93,7 +94,32 @@ users.delete("/:user_id", checkUserIndex, async (req, res) => {
         }
     }
     catch (error) {
-        res.status(400).json({error: `${error}, error in delete server path`})
+        res.status(400).json({ error: `${error}, error in delete server path` })
+    }
+})
+
+// UPDATE USER
+users.put("/:user_id/edit", checkUserIndex, async (req, res) => {
+    try {
+        const userToUpdate = req.body
+        userToUpdate.profile_img = !userToUpdate.profile_img ? "profile image" : userToUpdate.profile_img
+        userToUpdate.firstname = !userToUpdate.firstname ? "unknown first name" : userToUpdate.firstname
+        userToUpdate.lastname = !userToUpdate.lastname ? "unknown last name" : userToUpdate.lastname
+        userToUpdate.about = !userToUpdate.about ? "about me" : userToUpdate.about
+        userToUpdate.dob = !userToUpdate.dob ? "1/1/2024" : userToUpdate.dob
+        let updatedUser = await createUser(userToUpdate)
+        if (updatedUser.user_id) {
+            updatedUser.password = "hidden"
+            res.status(200).json(updatedUser)
+        }
+        else {
+            res.status(400).json({
+                error: `error in updating, try again`
+            })
+        }
+    }
+    catch (error) {
+        res.status(400).json({ error: `${error}, error in user edit route, in controller` })
     }
 })
 

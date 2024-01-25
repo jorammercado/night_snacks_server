@@ -10,12 +10,12 @@ const getOneUser = async (id) => {
 }
 
 const getAllUsers = async () => {
-    try{
+    try {
         const allUsers = await db.any(`SELECT * FROM users`)
         return allUsers
     }
-    catch(err){
-        return { err: `${err}, sql query error - get all users`}
+    catch (err) {
+        return { err: `${err}, sql query error - get all users` }
     }
 }
 
@@ -67,28 +67,44 @@ const createUser = async (user) => {
 }
 
 const deleteUserByUsername = async (username) => {
-    try{
+    try {
         const deletedUser = await db.one(
             `DELETE FROM users WHERE username=$1 RETURNING *`,
             username
         )
-            return deletedUser
+        return deletedUser
     }
-    catch(err){
-        return {err: `${err}, sql query error in deleting a user`}
+    catch (err) {
+        return { err: `${err}, sql query error in deleting a user` }
     }
 }
 
 const deleteUser = async (user_id) => {
-    try{
+    try {
         const deletedUser = await db.one(
             `DELETE FROM users WHERE user_id=$1 RETURNING *`,
             user_id
         )
-            return deletedUser
+        return deletedUser
     }
-    catch(err){
-        return {err: `${err}, sql query error in deleting a user`}
+    catch (err) {
+        return { err: `${err}, sql query error in deleting a user` }
+    }
+}
+
+const updateUser = async (user_id, user) => {
+    try {
+        const { firstname, lastname, profile_img, about, dob } = user
+        const updatedUser = await db.one(
+            `UPDATE users SET firstname=$1, lastname=$2, ` +
+            `profile_img=$3, about=$4, dob=$5 WHERE user_id=$6 ` +
+            `RETURNING *`,
+            [firstname, lastname, profile_img, about, dob, user_id]
+        )
+        return updatedUser
+    }
+    catch (err) {
+        return { err: `${err}, sql query error in updating a user` }
     }
 }
 
@@ -100,5 +116,6 @@ module.exports = {
     getOneUserByUserName,
     createUser,
     deleteUserByUsername,
-    deleteUser
+    deleteUser,
+    updateUser
 }
