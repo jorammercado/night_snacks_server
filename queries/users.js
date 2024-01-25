@@ -9,6 +9,16 @@ const getOneUser = async (id) => {
     }
 }
 
+const getAllUsers = async () => {
+    try{
+        const allUsers = await db.any(`SELECT * FROM users`)
+        return allUsers
+    }
+    catch(err){
+        return { err: `${err}, sql query error - get all users`}
+    }
+}
+
 const getOneUserByEmail = async ({ email }) => {
     try {
         const oneUser = await db.oneOrNone("SELECT * FROM users WHERE email=$1",
@@ -56,7 +66,7 @@ const createUser = async (user) => {
     }
 }
 
-const deleteUser = async (username) => {
+const deleteUserByUsername = async (username) => {
     try{
         const deletedUser = await db.one(
             `DELETE FROM users WHERE username=$1 RETURNING *`,
@@ -69,11 +79,26 @@ const deleteUser = async (username) => {
     }
 }
 
+const deleteUser = async (user_id) => {
+    try{
+        const deletedUser = await db.one(
+            `DELETE FROM users WHERE user_id=$1 RETURNING *`,
+            user_id
+        )
+            return deletedUser
+    }
+    catch(err){
+        return {err: `${err}, sql query error in deleting a user`}
+    }
+}
+
 
 module.exports = {
     getOneUser,
+    getAllUsers,
     getOneUserByEmail,
     getOneUserByUserName,
     createUser,
+    deleteUserByUsername,
     deleteUser
 }

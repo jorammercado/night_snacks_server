@@ -2,16 +2,16 @@ const express = require("express")
 const bcrypt = require("bcryptjs")
 
 const {
-    getOneUser,
     getOneUserByEmail,
     getOneUserByUserName,
     createUser,
     deleteUser
 } = require("../queries/users.js")
 const {
-    checkName,
+    checkUsername,
     checkEmail,
-    checkPassword
+    checkPassword,
+    checkUserIndex
 } = require("../validations/checkUser.js")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -41,7 +41,7 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
 })
 
 // SIGN UP ROUTE
-users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
+users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
     const registeredUserByEmail = await getOneUserByEmail(req.body)
     const registeredUserByUserName = await getOneUserByUserName(req.body)
     if (registeredUserByEmail)
@@ -80,10 +80,10 @@ users.post("/", checkName, checkEmail, checkPassword, async (req, res) => {
 })
 
 // delete user
-users.delete("/:id", checkName, async (req, res) => {
+users.delete("/:user_id", checkUserIndex, async (req, res) => {
     try {
-        const { username } = req.params
-        const deletedUser = await deleteUser(username)
+        const { user_id } = req.params
+        const deletedUser = await deleteUser(user_id)
         if (deletedUser) {
             deletedUser.password = ""
             res.status(200).json(deletedUser)
