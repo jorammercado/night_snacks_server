@@ -16,7 +16,7 @@ const {
     checkUsernameExists,
     checkEmailExists,
     checkUsernameExistsOtherThanSelf,
-    checkEmailOtherThanSelf
+    checkEmailExistsOtherThanSelf
 } = require("../validations/checkUser.js")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -101,16 +101,17 @@ users.delete("/:user_id", checkUserIndex, async (req, res) => {
 // UPDATE USER
 users.put("/:user_id", checkUserIndex,
     checkUsernameExistsOtherThanSelf,
-    checkEmailOtherThanSelf,
+    checkEmailExistsOtherThanSelf,
     async (req, res) => {
         try {
+            const { user_id } = req.params
             const userToUpdate = req.body
             userToUpdate.profile_img = !userToUpdate.profile_img ? "profile image" : userToUpdate.profile_img
             userToUpdate.firstname = !userToUpdate.firstname ? "unknown first name" : userToUpdate.firstname
             userToUpdate.lastname = !userToUpdate.lastname ? "unknown last name" : userToUpdate.lastname
             userToUpdate.about = !userToUpdate.about ? "about me" : userToUpdate.about
             userToUpdate.dob = !userToUpdate.dob ? "00/00/0000" : userToUpdate.dob
-            let updatedUser = await createUser(userToUpdate)
+            let updatedUser = await updateUser(user_id, userToUpdate)
             if (updatedUser.user_id) {
                 updatedUser.password = "hidden"
                 res.status(200).json(updatedUser)

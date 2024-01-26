@@ -45,7 +45,7 @@ const checkEmailExists = async (req, res, next) => {
     }
 }
 
-const checkEmailOtherThanSelf = async (req, res, next) => {
+const checkEmailExistsOtherThanSelf = async (req, res, next) => {
     const { user_id } = req.params
     const registeredUserByEmail = await getOneUserByEmail(req.body)
     if (registeredUserByEmail.user_id === Number(user_id) || !registeredUserByEmail)
@@ -97,5 +97,5 @@ module.exports = {
     checkUsernameExists,
     checkEmailExists,
     checkUsernameExistsOtherThanSelf,
-    checkEmailOtherThanSelf
+    checkEmailExistsOtherThanSelf
 }
