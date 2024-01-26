@@ -25,4 +25,4 @@ CREATE TABLE snacks (
     rating DECIMAL DEFAULT 0,
     is_favorite BOOLEAN DEFAULT false,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (user_id) );
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE);

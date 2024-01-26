@@ -12,7 +12,11 @@ const {
     checkUsername,
     checkEmail,
     checkPassword,
-    checkUserIndex
+    checkUserIndex,
+    checkUsernameExists,
+    checkEmailExists,
+    checkUsernameExistsOtherThanSelf,
+    checkEmailOtherThanSelf
 } = require("../validations/checkUser.js")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -42,14 +46,11 @@ users.post("/login", checkEmail, checkPassword, async (req, res) => {
 })
 
 // SIGN UP ROUTE, CREATE USER
-users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
-    const registeredUserByEmail = await getOneUserByEmail(req.body)
-    const registeredUserByUserName = await getOneUserByUserName(req.body)
-    if (registeredUserByEmail)
-        return res.status(400).json({ error: "user already registered with this address" })
-    else if (registeredUserByUserName)
-        return res.status(400).json({ error: "user already registered with this username" })
-    else {
+users.post("/", checkUsername,
+    checkEmail,
+    checkPassword,
+    checkUsernameExists,
+    checkEmailExists, async (req, res) => {
         const newUser = req.body
         bcrypt.genSalt(10, async (err, salt) => {
             bcrypt.hash(newUser.password, salt, async (err, hash) => {
@@ -61,14 +62,14 @@ users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
                     newUser.lastname = !newUser.lastname ? "unknown last name" : newUser.lastname
                     newUser.about = !newUser.about ? "about me" : newUser.about
                     newUser.dob = !newUser.dob ? "1/1/2024" : newUser.dob
-                    let createdUser = await updateUser(newUser)
+                    let createdUser = await createUser(newUser)
                     if (createdUser.user_id) {
                         createdUser.password = "hidden"
                         res.status(200).json(createdUser)
                     }
                     else {
                         res.status(400).json({
-                            error: `error creating user, try again`
+                            error: `error creating user, sql-res:${createdUser.err}`
                         })
                     }
                 }
@@ -77,8 +78,7 @@ users.post("/", checkUsername, checkEmail, checkPassword, async (req, res) => {
                 }
             })
         })
-    }
-})
+    })
 
 // DELETE USER
 users.delete("/:user_id", checkUserIndex, async (req, res) => {
@@ -99,29 +99,32 @@ users.delete("/:user_id", checkUserIndex, async (req, res) => {
 })
 
 // UPDATE USER
-users.put("/:user_id/edit", checkUserIndex, async (req, res) => {
-    try {
-        const userToUpdate = req.body
-        userToUpdate.profile_img = !userToUpdate.profile_img ? "profile image" : userToUpdate.profile_img
-        userToUpdate.firstname = !userToUpdate.firstname ? "unknown first name" : userToUpdate.firstname
-        userToUpdate.lastname = !userToUpdate.lastname ? "unknown last name" : userToUpdate.lastname
-        userToUpdate.about = !userToUpdate.about ? "about me" : userToUpdate.about
-        userToUpdate.dob = !userToUpdate.dob ? "1/1/2024" : userToUpdate.dob
-        let updatedUser = await createUser(userToUpdate)
-        if (updatedUser.user_id) {
-            updatedUser.password = "hidden"
-            res.status(200).json(updatedUser)
+users.put("/:user_id", checkUserIndex,
+    checkUsernameExistsOtherThanSelf,
+    checkEmailOtherThanSelf,
+    async (req, res) => {
+        try {
+            const userToUpdate = req.body
+            userToUpdate.profile_img = !userToUpdate.profile_img ? "profile image" : userToUpdate.profile_img
+            userToUpdate.firstname = !userToUpdate.firstname ? "unknown first name" : userToUpdate.firstname
+            userToUpdate.lastname = !userToUpdate.lastname ? "unknown last name" : userToUpdate.lastname
+            userToUpdate.about = !userToUpdate.about ? "about me" : userToUpdate.about
+            userToUpdate.dob = !userToUpdate.dob ? "00/00/0000" : userToUpdate.dob
+            let updatedUser = await createUser(userToUpdate)
+            if (updatedUser.user_id) {
+                updatedUser.password = "hidden"
+                res.status(200).json(updatedUser)
+            }
+            else {
+                res.status(400).json({
+                    error: `error in updating, try again`
+                })
+            }
         }
-        else {
-            res.status(400).json({
-                error: `error in updating, try again`
-            })
+        catch (error) {
+            res.status(400).json({ error: `${error}, error in user edit route, in controller` })
         }
-    }
-    catch (error) {
-        res.status(400).json({ error: `${error}, error in user edit route, in controller` })
-    }
-})
+    })
 
 
 module.exports = users
